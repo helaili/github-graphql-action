@@ -6,4 +6,4 @@ query:
   }
 variables:
   owner: helaili
-  name: graphql-action 
+  name: github-graphql-action 

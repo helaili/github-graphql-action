@@ -1,5 +1,6 @@
-#graphql-action
+#github-graphql-action
 
+An action that acts a client for GitHub's GraphQL API
 
 ### Parameters
 | Name  | Description |
@@ -20,5 +21,5 @@ query:
   }
 variables:
   owner: helaili
-  name: graphql-action
+  name: github-graphql-action
 ```

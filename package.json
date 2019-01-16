@@ -1,14 +1,14 @@
 {
-  "name": "graphql-action",
+  "name": "github-graphql-action",
   "version": "1.0.0",
-  "description": "An action which executes GraphQL queries",
+  "description": "An action that acts a client for GitHub's GraphQL API",
   "main": "entrypoint.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/helaili/graphql-action.git"
+    "url": "git+https://github.com/helaili/github-graphql-action.git"
   },
   "keywords": [
     "graphql",
@@ -17,9 +17,9 @@
   "author": "Alain Hélaïli",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/helaili/graphql-action/issues"
+    "url": "https://github.com/helaili/github-graphql-action/issues"
   },
-  "homepage": "https://github.com/helaili/graphql-action#readme",
+  "homepage": "https://github.com/helaili/github-graphql-action#readme",
   "dependencies": {
     "actions-toolkit": "0.0.4",
     "axios": "^0.18.0",
