@@ -9,9 +9,9 @@ let options = {
   }
 }
 
-let url = tools.arguments.url
-if (!url) {
-  url = 'https://api.github.com/graphql'
+let url = 'https://api.github.com/graphql'
+if (tools.arguments.url) {
+  url = tools.arguments.url
 }
 
 let body = {}
@@ -32,7 +32,7 @@ if (tools.arguments.accept) {
   options.headers.Accept = tools.arguments.accept
 }
 
-axios.post(tools.arguments.url, body, options)
+axios.post(url, body, options)
   .then(function (response) {
     console.log(response.data);
   })
