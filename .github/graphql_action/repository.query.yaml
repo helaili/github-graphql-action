@@ -1,9 +1,9 @@
 query:
   query($owner:String!, $name:String!) {
     repository(owner:$owner, name:$name) {
-  	 name
-   }
+      name
+    }
   }
 variables:
   owner: helaili
-  name: github-graphql-action 
+  name: github-graphql-action
