@@ -9,9 +9,9 @@ let options = {
   }
 }
 
-if (!tools.arguments.url) {
-  console.error('Configuration error: missing url argument')
-  process.exit(-1)
+let url = tools.arguments.url
+if (!url) {
+  url = 'https://api.github.com/graphql'
 }
 
 let body = {}
