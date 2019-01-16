@@ -6,4 +6,5 @@ workflow "New workflow" {
 action "GraphQL query" {
   uses = "./"
   secrets = ["GITHUB_TOKEN"]
+  args = "--url https://api.github.com/graphql --query .github/graphql_action/repository.query.yaml"
 }

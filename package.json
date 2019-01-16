@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/helaili/graphql-action#readme",
   "dependencies": {
-    "actions-toolkit": "0.0.4"
+    "actions-toolkit": "0.0.4",
+    "axios": "^0.18.0",
+    "node-yaml": "^3.1.1"
   }
 }

@@ -1,0 +1,9 @@
+query:
+  query($owner:String!, $name:String!) {
+    repository(owner:$owner, name:$name) {
+  	 name
+   }
+  }
+variables:
+  owner: helaili
+  name: graphql-action 
