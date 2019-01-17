@@ -1,5 +1,6 @@
 const axios = require('axios')
 const yaml = require('node-yaml')
+const fs = require('fs')
 const { Toolkit } = require('actions-toolkit')
 const tools = new Toolkit()
 
@@ -14,6 +15,12 @@ if (tools.arguments.url) {
   url = tools.arguments.url
 }
 
+let outputFile = 'github-graphql-action.json'
+if (tools.arguments.file) {
+  outputFile = tools.arguments.file
+}
+
+
 let body = {}
 
 if (!tools.arguments.query) {
@@ -25,6 +32,16 @@ if (!tools.arguments.query) {
 
   if (yamlContent.variables) {
     body.variables = yamlContent.variables
+    for (const key in body.variables) {
+      console.log(`inspecting ${body.variables[key]}`)
+      let regex = /\${(.*)}/g
+      
+      var found = regex.exec(body.variables[key])
+      if (found) {
+        body.variables[key] = tools.arguments[found[1]]
+      }
+      console.log(found);
+    }
   }
 }
 
@@ -34,8 +51,14 @@ if (tools.arguments.accept) {
 
 axios.post(url, body, options)
   .then(function (response) {
-    console.log(response.data);
+    let jsonStringData = JSON.stringify(response.data)
+    console.log(jsonStringData)
+    fs.writeFile(`${tools.workspace}/${outputFile}`, jsonStringData, (err) => {
+      if (err) throw err;
+      console.log(`GraphQL response saved to ${outputFile}`);
+    })
+    //GITHUB_WORKSPACE
   })
   .catch(function (error) {
-    console.log(error);
+    console.log(error)
   })

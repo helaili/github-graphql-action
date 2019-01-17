@@ -1,0 +1,12 @@
+query: '
+  query { __type(name: "PinnedIssue") {
+    name
+    fields {
+      name
+      type {
+        name
+        kind
+      }
+     }
+    }
+  }'

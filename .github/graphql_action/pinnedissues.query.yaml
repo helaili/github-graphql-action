@@ -1,0 +1,20 @@
+query: '
+  query($owner:String!, $name:String!) {
+    repository(owner:$owner, name:$name) {
+      pinnedIssues(first:3) {
+        nodes {
+          issue {
+            number
+            labels (first: 10) {
+              nodes {
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  }'
+variables:
+  owner: ${owner}
+  name: ${name}
