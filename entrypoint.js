@@ -1,6 +1,7 @@
 const axios = require('axios')
 const yaml = require('node-yaml')
 const fs = require('fs')
+const { execSync } = require('child_process')
 const { Toolkit } = require('actions-toolkit')
 const tools = new Toolkit()
 
@@ -32,16 +33,35 @@ if (!tools.arguments.query) {
 
   if (yamlContent.variables) {
     body.variables = yamlContent.variables
+
+    // Looking at the variables values to check if they are scalar or pointers to args/jq
     for (const key in body.variables) {
-      console.log(`inspecting ${body.variables[key]}`)
-      let regex = /\${(.*)}/g
-      
-      var found = regex.exec(body.variables[key])
-      if (found) {
-        body.variables[key] = tools.arguments[found[1]]
+      let value = body.variables[key]
+
+      if (typeof value === 'object') {
+        if (value.type === 'arg') {
+          // Value is coming from the command line
+          body.variables[key] = tools.arguments[value.name]
+        } else if (value.type === 'jq') {
+          // Need to apply jq to a file to retrieve a value
+          let jsonFile = value.file
+          let jqQuery = value.query
+
+          let result = execSync(`cat ${tools.workspace}/${jsonFile} | jq '${jqQuery}'`,  {stdio: [this.stdin, this.stdout, this.stderr]})
+          if (value.cast === 'Int') {
+            body.variables[key] = parseInt(result)
+          } else if (value.cast === 'Float') {
+            body.variables[key] = parseFloat(result)
+          } else if (value.cast === 'Boolean') {
+            body.variables[key] = (result.toLowerCase() == 'true');
+          } else {
+            body.variables[key] = result
+          }
+          console.log(`jq quert result: ${result}`)
+        }
       }
-      console.log(found);
     }
+    console.log(body.variables)
   }
 }
 
@@ -52,13 +72,15 @@ if (tools.arguments.accept) {
 axios.post(url, body, options)
   .then(function (response) {
     let jsonStringData = JSON.stringify(response.data)
+
     console.log(jsonStringData)
+
     fs.writeFile(`${tools.workspace}/${outputFile}`, jsonStringData, (err) => {
-      if (err) throw err;
-      console.log(`GraphQL response saved to ${outputFile}`);
+      if (err) throw err
+      console.log(`GraphQL response saved to ${outputFile}`)
     })
-    //GITHUB_WORKSPACE
   })
   .catch(function (error) {
     console.log(error)
+    process.exit(-1)
   })

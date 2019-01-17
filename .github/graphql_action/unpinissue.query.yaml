@@ -16,9 +16,5 @@ query: '
     }
   }'
 variables:
-  owner:
-    type: arg
-    name: owner
-  name:
-    type: arg
-    name: name
+  number: '$jq{pinnedIssues.json;.data.repository.pinnedIssues.nodes[]|{number: .issue.number, label: .issue.labels.nodes[].name}|if .label=="duplicate" then .number else empty end}'
+  name: $arg{name}

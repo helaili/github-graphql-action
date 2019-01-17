@@ -1,5 +1,9 @@
 FROM node:10-slim
 
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y \
+        jq
+
 LABEL "com.github.actions.name"="GraphQL query"
 LABEL "com.github.actions.description"="An action that acts a client for GitHub's GraphQL API"
 LABEL "com.github.actions.icon"="database"

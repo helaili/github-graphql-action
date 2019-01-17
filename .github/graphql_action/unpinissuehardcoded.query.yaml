@@ -1,0 +1,20 @@
+query: '
+  query($owner:String!, $name:String!, $number:Int!) {
+    repository(owner:$owner, name:$name) {
+      issue(number:$number) {
+        title
+      }
+    }
+  }'
+variables:
+  number:
+    type: jq
+    file: pinnedIssues.json
+    query: '.data.repository.pinnedIssues.nodes[]|{number: .issue.number, label: .issue.labels.nodes[].name}|if .label=="duplicate" then .number else empty end'
+    cast: Int
+  owner:
+    type: arg
+    name: owner
+  name:
+    type: arg
+    name: name
