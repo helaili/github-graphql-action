@@ -1,6 +1,6 @@
-workflow "New workflow" {
-  on = "push"
+workflow "Pin Issue" {
   resolves = ["Unpin Issue GraphQL query"]
+  on = "label"
 }
 
 action "Repo GraphQL query" {
