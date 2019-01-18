@@ -1,6 +1,6 @@
 workflow "New workflow" {
   on = "push"
-  resolves = ["Unpin Issue GraphQL query", "Repo GraphQL query"]
+  resolves = ["Unpin Issue GraphQL query"]
 }
 
 action "Repo GraphQL query" {
@@ -19,7 +19,7 @@ action "Unpin Issue GraphQL query" {
   uses = "./"
   secrets = ["GITHUB_TOKEN"]
   needs = ["Pinned Issues GraphQL query"]
-  args = "--accept application/vnd.github.elektra-preview+json --query .github/graphql_action/unpinissuehardcoded.query.yaml --owner helaili --name hello-vue"
+  args = "--accept application/vnd.github.elektra-preview+json --query .github/graphql_action/unpinissue.query.yaml --owner helaili --name hello-vue"
 }
 
 action "Introspection GraphQL query" {
