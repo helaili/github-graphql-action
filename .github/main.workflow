@@ -19,7 +19,7 @@ action "Unpin Issue GraphQL query" {
   uses = "./"
   secrets = ["GITHUB_TOKEN"]
   needs = ["Pinned Issues GraphQL query"]
-  args = "--accept application/vnd.github.elektra-preview+json --query .github/graphql_action/unpinissue.query.yaml --owner helaili --name github-graphql-action "
+  args = "--accept application/vnd.github.elektra-preview+json --query .github/graphql_action/unpinissue.query.yaml --owner helaili --name github-graphql-action"
 }
 
 action "Introspection GraphQL query" {
