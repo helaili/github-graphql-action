@@ -101,4 +101,22 @@ action "GraphQL query" {
 }
 ```
 
-#### Mutation 
+#### Mutation
+
+```yaml
+query: '
+  mutation pinIssue($issueId: ID!){
+    pinIssue(input: { issueId: $issueId }) {
+      issue {
+        repository {
+          id
+        }
+      }
+    }
+  }'
+variables:
+  issueId:
+    type: jq
+    file: ../workflow/event.json
+    query: '.issue.node_id'
+```
