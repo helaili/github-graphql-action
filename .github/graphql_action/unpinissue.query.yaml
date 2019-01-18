@@ -1,20 +1,15 @@
 query: '
-  query($owner:String!, $name:String!) {
-    repository(owner:$owner, name:$name) {
-      pinnedIssues(first:3) {
-        nodes {
-          issue {
-            number
-            labels (first: 10) {
-              nodes {
-                name
-              }
-            }
-          }
+  mutation unpinIssue($issueId: ID!){
+    unpinIssue(input: { issueId: $issueId }) {
+      issue {
+        repository {
+          id
         }
       }
     }
   }'
 variables:
-  number: '$jq{pinnedIssues.json;.data.repository.pinnedIssues.nodes[]|{number: .issue.number, label: .issue.labels.nodes[].name}|if .label=="duplicate" then .number else empty end}'
-  name: $arg{name}
+  issueId:
+    type: jq
+    file: pinnedIssues.json
+    query: '.data.repository.pinnedIssues.nodes[]|{id: .issue.id, label: .issue.labels.nodes[].name}|if .label=="duplicate" then .id else empty end'

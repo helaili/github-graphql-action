@@ -5,6 +5,11 @@ const { execSync } = require('child_process')
 const { Toolkit } = require('actions-toolkit')
 const tools = new Toolkit()
 
+
+console.log('##################################')
+console.log(tools.context.payload)
+console.log('##################################')
+
 let options = {
   headers: {
     Authorization: `bearer ${tools.token}`
@@ -47,7 +52,7 @@ if (!tools.arguments.query) {
           let jsonFile = value.file
           let jqQuery = value.query
 
-          let result = execSync(`cat ${tools.workspace}/${jsonFile} | jq '${jqQuery}'`,  {stdio: [this.stdin, this.stdout, this.stderr]})
+          let result = execSync(`cat ${tools.workspace}/${jsonFile} | jq -j '${jqQuery}'`,  {stdio: [this.stdin, this.stdout, this.stderr]})
           if (value.cast === 'Int') {
             body.variables[key] = parseInt(result)
           } else if (value.cast === 'Float') {
@@ -55,9 +60,9 @@ if (!tools.arguments.query) {
           } else if (value.cast === 'Boolean') {
             body.variables[key] = (result.toLowerCase() == 'true');
           } else {
-            body.variables[key] = result
+            body.variables[key] = result.toString()
           }
-          console.log(`jq quert result: ${result}`)
+          console.log(`jq query result: ${result}`)
         }
       }
     }

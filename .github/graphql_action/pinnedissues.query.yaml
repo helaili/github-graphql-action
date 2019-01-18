@@ -4,6 +4,7 @@ query: '
       pinnedIssues(first:3) {
         nodes {
           issue {
+            id
             number
             labels (first: 10) {
               nodes {

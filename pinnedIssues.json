@@ -1,1 +1,1 @@
-{"data":{"repository":{"pinnedIssues":{"nodes":[{"issue":{"number":4,"labels":{"nodes":[{"name":"deploy-to-test"},{"name":"duplicate"}]}}}]}}}}
+{"data":{"repository":{"pinnedIssues":{"nodes":[{"issue":{"id":"MDU6SXNzdWUzNzQ0NDA4MTQ=","number":4,"labels":{"nodes":[{"name":"deploy-to-test"},{"name":"duplicate"}]}}}]}}}}
