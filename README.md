@@ -1,4 +1,4 @@
-#github-graphql-action
+# github-graphql-action
 
 An action that acts a client for GitHub's GraphQL API and can be chained. It means you can use a first instance to execute a GraphQL query and use its output to execute a GraphQL mutation.
 
@@ -15,7 +15,7 @@ Check [a sample workflow](https://github.com/helaili/github-graphql-action/blob/
 
 
 ### Query file
-The query file contains the GraphQL query to execute. Format is YAML based.
+The query file contains the GraphQL query or mutation to execute. Format is YAML based.
 
 #### Static parameters
 
@@ -100,3 +100,5 @@ action "GraphQL query" {
   args = "--query .github/graphql_action/repository-jq.query.yaml --log true"
 }
 ```
+
+#### Mutation 
