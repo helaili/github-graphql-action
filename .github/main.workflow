@@ -1,4 +1,4 @@
-workflow "Pin Issue" {
+workflow "Pin Latest Duplicate Issue" {
   resolves = ["Pin Issue"]
   on = "issues"
 }
