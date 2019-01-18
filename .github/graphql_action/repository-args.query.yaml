@@ -1,0 +1,13 @@
+query:
+  query($owner:String!, $name:String!) {
+    repository(owner:$owner, name:$name) {
+      name
+    }
+  }
+variables:
+  owner:
+    type: arg
+    name: owner
+  name:
+    type: arg
+    name: name

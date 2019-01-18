@@ -5,11 +5,6 @@ const { execSync } = require('child_process')
 const { Toolkit } = require('actions-toolkit')
 const tools = new Toolkit()
 
-
-console.log('##################################')
-console.log(tools.context.payload)
-console.log('##################################')
-
 let options = {
   headers: {
     Authorization: `bearer ${tools.token}`
@@ -22,8 +17,8 @@ if (tools.arguments.url) {
 }
 
 let outputFile = 'github-graphql-action.json'
-if (tools.arguments.file) {
-  outputFile = tools.arguments.file
+if (tools.arguments.output) {
+  outputFile = tools.arguments.output
 }
 
 
@@ -62,11 +57,12 @@ if (!tools.arguments.query) {
           } else {
             body.variables[key] = result.toString()
           }
-          console.log(`jq query result: ${result}`)
         }
       }
     }
-    console.log(body.variables)
+    if (tools.arguments.log) {
+      console.log(`GraphQL Variables:\n ${JSON.stringify(body.variables)}`)
+    }
   }
 }
 
@@ -78,12 +74,16 @@ axios.post(url, body, options)
   .then(function (response) {
     let jsonStringData = JSON.stringify(response.data)
 
-    console.log(jsonStringData)
-
     fs.writeFile(`${tools.workspace}/${outputFile}`, jsonStringData, (err) => {
       if (err) throw err
-      console.log(`GraphQL response saved to ${outputFile}`)
+      if (tools.arguments.log) {
+        console.log(`GraphQL response saved to ${outputFile}`)
+      }
     })
+
+    if (tools.arguments.log) {
+      console.log(`GraphQL Query response:\n ${jsonStringData}`)
+    }
   })
   .catch(function (error) {
     console.log(error)

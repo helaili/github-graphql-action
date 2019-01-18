@@ -1,8 +1,17 @@
 {
   "action": "labeled",
-  "issue":
-   {
-       "node_id": "MDU6SXNzdWU0MDA2NzMzNTE="
-
+  "issue": {
+       "node_id": "MDU6SXNzdWU0MDA2NzMzNTE=",
+       "labels": [
+         {
+           "name": "duplicate"
+         }
+       ]
+   },
+   "repository": {
+     "name": "github-graphql-action",
+     "owner": {
+       "login": "helaili"
+     }
    }
 }

@@ -1,21 +1,9 @@
-query: '
+query:
   query($owner:String!, $name:String!) {
     repository(owner:$owner, name:$name) {
-      pinnedIssues(first:3) {
-        nodes {
-          issue {
-            id
-            number
-            labels (first: 10) {
-              nodes {
-                name
-              }
-            }
-          }
-        }
-      }
+      name
     }
-  }'
+  }
 variables:
   owner:
     type: jq
