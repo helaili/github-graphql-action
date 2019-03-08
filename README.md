@@ -20,12 +20,12 @@ The query file contains the GraphQL query or mutation to execute. Format is YAML
 #### Static parameters
 
 ```yaml
-query:
+query: '
   query($owner:String!, $name:String!) {
     repository(owner:$owner, name:$name) {
   	 name
    }
-  }
+  }'
 variables:
   owner: helaili
   name: github-graphql-action
@@ -45,12 +45,12 @@ action "GraphQL query" {
 Variables values can also come from a command line argument.
 
 ```yaml
-query:
+query: '
   query($owner:String!, $name:String!) {
     repository(owner:$owner, name:$name) {
   	 name
    }
-  }
+  }'
 variables:
   owner:
     type: arg
@@ -75,12 +75,12 @@ Variable values can also come from a file, typically `event.json` which contains
 You can optionally add a `cast` parameter in order to convert the jq output to an `Int`, `Float` or `Boolean`
 
 ```yaml
-query:
+query:'
   query($owner:String!, $name:String!) {
     repository(owner:$owner, name:$name) {
       name
     }
-  }
+  }'
 variables:
   owner:
     type: jq
