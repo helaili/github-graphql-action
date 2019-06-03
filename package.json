@@ -22,7 +22,7 @@
   "homepage": "https://github.com/helaili/github-graphql-action#readme",
   "dependencies": {
     "actions-toolkit": "0.0.4",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "node-yaml": "^3.1.1"
   }
 }
