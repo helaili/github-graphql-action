@@ -63,16 +63,16 @@ axios.post(url, body, options)
   .then(function (response) {
     let jsonStringData = JSON.stringify(response.data)
 
-    const result = await tools.runInWorkspace('echo', `::set-output name=queryResult::${jsonStringData}`)
+    tools.runInWorkspace('echo', `::set-output name=queryResult::${jsonStringData}`).then(() => [
+      tools.log.debug(`Output variable queryResult set to ${jsonStringData}`)
+    ])
 
     if (outputFile) {
       fs.writeFile(`${tools.workspace}/${outputFile}`, jsonStringData, (err) => {
         if (err) throw err
-        tools.log.info(`GraphQL response saved to ${outputFile}`)
+        tools.log.debug(`GraphQL response saved to ${outputFile}`)
       })
     }
-
-    tools.log.info(`GraphQL Query response:\n ${jsonStringData}`)
   })
   .catch(function (error) {
     console.log(error)
