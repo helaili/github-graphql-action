@@ -4,7 +4,7 @@
   "description": "An action that acts a client for GitHub's GraphQL API",
   "main": "entrypoint.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -21,8 +21,30 @@
   },
   "homepage": "https://github.com/helaili/github-graphql-action#readme",
   "dependencies": {
-    "actions-toolkit": "3.0.0",
+    "@octokit/graphql": "^4.3.1",
+    "actions-toolkit": "^3.0.1",
     "axios": "^0.18.1",
     "node-yaml": "^3.1.1"
+  },
+  "devDependencies": {
+    "jest": "^25.1.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupFiles": [
+      "<rootDir>/tests/setup.js"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json"
+    ],
+    "testMatch": [
+      "<rootDir>/tests/**/*.test.(ts|js)"
+    ],
+    "globals": {
+      "ts-jest": {
+        "babelConfig": false
+      }
+    }
   }
 }
