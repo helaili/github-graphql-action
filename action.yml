@@ -1,6 +1,6 @@
 # action.yml
 name: 'GitHub GraphQL Action'
-description: 'A client for GitHub\'s GraphQL API'
+description: 'A client for GitHub GraphQL API'
 inputs:
   query: 
     description: 'The file containing the GraphQL query to execute'
