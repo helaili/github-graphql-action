@@ -18,12 +18,18 @@ Toolkit.run(async tools => {
       Authorization: `bearer ${tools.token}`
     }
   }
+
+  tools.log.debug(`url: ${url}`)
+  tools.log.debug(`outputFile: ${outputFile}`)
+  tools.log.debug(`accept: ${accept}`)
   
   let body = {}
   
   let yamlContent = yaml.parse(tools.getFile(tools.inputs.query))
   body.query = yamlContent.query
   
+  tools.log.debug(`query: ${body.query}`)
+
   if (yamlContent.variables) {
     body.variables = yamlContent.variables
   
