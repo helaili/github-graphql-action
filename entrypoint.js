@@ -19,6 +19,7 @@ Toolkit.run(async tools => {
     }
   }
 
+  tools.log.debug(`token: ${tools.token}`)
   tools.log.debug(`url: ${url}`)
   tools.log.debug(`outputFile: ${outputFile}`)
   tools.log.debug(`accept: ${accept}`)
