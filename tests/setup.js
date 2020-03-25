@@ -10,6 +10,6 @@ Object.assign(process.env, {
   GITHUB_SHA: '123abc',
   GITHUB_TOKEN: '456def',
   GITHUB_WORKFLOW: 'my-workflow',
-  GITHUB_WORKSPACE: path.join(__dirname, 'fixtures', 'workspaces'),
+  GITHUB_WORKSPACE: path.join(__dirname),
   HOME: '?'
 })

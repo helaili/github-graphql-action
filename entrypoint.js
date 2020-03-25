@@ -11,7 +11,7 @@ Toolkit.run(async tools => {
   })
   
   const url = tools.inputs.url
-  const outputFile = tools.inputs.output
+  const outputFile = tools.inputs.outputFile
   const accept = tools.inputs.accept
   const options = {
     headers: {
@@ -59,28 +59,23 @@ Toolkit.run(async tools => {
   if (accept) {
     options.headers.Accept = accept
   }
-  
-  axios.post(url, body, options)
-    .then(function (response) {
-      let jsonStringData = JSON.stringify(response.data)
-  
-      tools.runInWorkspace('echo', `::set-output name=queryResult::${jsonStringData}`).then(() => [
-        tools.log.debug(`Output variable queryResult set to ${jsonStringData}`)
-      ])
-  
-      if (outputFile) {
-        fs.writeFile(`${tools.workspace}/${outputFile}`, jsonStringData, (err) => {
-          if (err) {
-            tools.exit.failure(err)
-          }
-          tools.log.debug(`GraphQL response saved to ${outputFile}`)
-          tools.exit.success('Sweet success')
-        })
-      } else {
-        tools.exit.success('Sweet success')
+
+  const response = await axios.post(url, body, options)
+  const jsonStringData = JSON.stringify(response.data)
+
+  tools.runInWorkspace('echo', `::set-output name=queryResult::${jsonStringData}`)
+  tools.log.debug(`Output variable queryResult set to ${jsonStringData}`)
+    
+  if (outputFile) {
+    fs.writeFile(`${tools.workspace}/${outputFile}`, jsonStringData, (err) => {
+      if (err) {
+        tools.exit.failure(err)
       }
+      tools.log.debug(`GraphQL response saved to ${outputFile}`)
+      tools.exit.success('Sweet success')
     })
-    .catch(function (error) {
-      tools.exit.failure(error)
-    })  
+  } else {
+    tools.exit.success('Sweet success')
+  }
+        
 })
