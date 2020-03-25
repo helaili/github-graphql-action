@@ -1,0 +1,30 @@
+# action.yml
+name: 'GitHub GraphQL Action'
+description: 'A client for GitHub\'s GraphQL API'
+inputs:
+  query: 
+    description: 'The file containing the GraphQL query to execute'
+    required: true
+  url: 
+    description: 'The GraphQL API endpoint'
+    required: true
+    default: 'https://api.github.com/graphql'
+  accept: 
+    description: 'Optional `Accept` HTTP header'
+    required: false
+  outputFile: 
+    description: 'Where to persist the output on the disk'
+    required: false
+  logLevel: 
+    description: 'Log level (`info`, `timer`, `debug`, `warn`, `error`)'
+    required: false
+    default: 'error' 
+outputs:
+  queryResult: 
+    description: 'The result of the query'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+branding:
+  icon: 'database'  
+  color: 'purple'
