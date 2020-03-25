@@ -1,6 +1,6 @@
 {
   "name": "github-graphql-action",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "An action that acts a client for GitHub's GraphQL API",
   "main": "entrypoint.js",
   "scripts": {
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/helaili/github-graphql-action#readme",
   "dependencies": {
-    "actions-toolkit": "0.0.4",
+    "actions-toolkit": "3.0.0",
     "axios": "^0.18.1",
     "node-yaml": "^3.1.1"
   }
