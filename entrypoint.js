@@ -36,7 +36,8 @@ Toolkit.run(async tools => {
     // Looking at the variables values to check if they are scalar or pointers to args/jq
     for (const key in body.variables) {
       let value = body.variables[key]
-  
+      tools.log.debug(`GraphQL param ${key}=${value}`)
+
       if (typeof value === 'object') {
         if (value.type === 'arg') {
           // Value is coming from the command line

@@ -14,3 +14,16 @@ jobs:
       with:
         query: samples/repository-static.query.yaml
         logLevel: debug
+  args-query:
+    runs-on: ubuntu-16.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ./
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        query: samples/repository-args.query.yaml
+        logLevel: debug
+        owner: helaili
+        name: github-graphql-action
+
