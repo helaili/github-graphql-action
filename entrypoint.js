@@ -3,50 +3,50 @@ const yaml = require('node-yaml')
 const fs = require('fs')
 const { execSync } = require('child_process')
 const { Toolkit } = require('actions-toolkit')
-const tools = new Toolkit()
 
-let options = {
-  headers: {
-    Authorization: `bearer ${tools.token}`
+
+Toolkit.run(async tools => {
+  tools.log.config({
+    logLevel: tools.inputs.logLevel
+  })
+  
+  const url = tools.inputs.url
+  const outputFile = tools.inputs.outputFile
+  const accept = tools.inputs.accept
+  const options = {
+    headers: {
+      Authorization: `bearer ${tools.token}`
+    }
   }
-}
 
-let url = 'https://api.github.com/graphql'
-if (tools.arguments.url) {
-  url = tools.arguments.url
-}
-
-let outputFile = 'github-graphql-action.json'
-if (tools.arguments.output) {
-  outputFile = tools.arguments.output
-}
-
-
-let body = {}
-
-if (!tools.arguments.query) {
-  console.error('Configuration error: missing query argument')
-  process.exit(-1)
-} else {
-  let yamlContent = yaml.parse(tools.getFile(tools.arguments.query))
+  tools.log.debug(`url: ${url}`)
+  tools.log.debug(`outputFile: ${outputFile}`)
+  tools.log.debug(`accept: ${accept}`)
+  
+  let body = {}
+  
+  let yamlContent = yaml.parse(tools.getFile(tools.inputs.query))
   body.query = yamlContent.query
+  
+  tools.log.debug(`query: ${body.query}`)
 
   if (yamlContent.variables) {
     body.variables = yamlContent.variables
-
+  
     // Looking at the variables values to check if they are scalar or pointers to args/jq
     for (const key in body.variables) {
       let value = body.variables[key]
+      tools.log.debug(`GraphQL param ${key} found`)
 
       if (typeof value === 'object') {
         if (value.type === 'arg') {
           // Value is coming from the command line
-          body.variables[key] = tools.arguments[value.name]
+          body.variables[key] = tools.inputs[value.name]
         } else if (value.type === 'jq') {
           // Need to apply jq to a file to retrieve a value
           let jsonFile = value.file
           let jqQuery = value.query
-
+  
           let result = execSync(`cat ${tools.workspace}/${jsonFile} | jq -j '${jqQuery}'`,  {stdio: [this.stdin, this.stdout, this.stderr]})
           if (value.cast === 'Int') {
             body.variables[key] = parseInt(result)
@@ -60,32 +60,31 @@ if (!tools.arguments.query) {
         }
       }
     }
-    if (tools.arguments.log) {
-      console.log(`GraphQL Variables:\n ${JSON.stringify(body.variables)}`)
-    }
+    tools.log.info(`GraphQL Variables:\n ${JSON.stringify(body.variables)}`)
   }
-}
+  
+  if (accept) {
+    options.headers.Accept = accept
+  }
 
-if (tools.arguments.accept) {
-  options.headers.Accept = tools.arguments.accept
-}
+  const response = await axios.post(url, body, options)
+  const jsonStringData = JSON.stringify(response.data)
 
-axios.post(url, body, options)
-  .then(function (response) {
-    let jsonStringData = JSON.stringify(response.data)
-
+  tools.runInWorkspace('echo', `::set-output name=queryResult::${jsonStringData}`)
+  tools.log.debug(`Output variable queryResult set to ${jsonStringData}`)
+    
+  if (outputFile) {
     fs.writeFile(`${tools.workspace}/${outputFile}`, jsonStringData, (err) => {
-      if (err) throw err
-      if (tools.arguments.log) {
-        console.log(`GraphQL response saved to ${outputFile}`)
+      if (err) {
+        tools.exit.failure(err)
       }
+      tools.log.debug(`GraphQL response saved to ${outputFile}`)
+      tools.exit.success('Sweet success')
     })
-
-    if (tools.arguments.log) {
-      console.log(`GraphQL Query response:\n ${jsonStringData}`)
-    }
-  })
-  .catch(function (error) {
-    console.log(error)
-    process.exit(-1)
-  })
+  } else {
+    tools.exit.success('Sweet success')
+  }
+        
+}, {
+  secrets: ['GITHUB_TOKEN']
+})

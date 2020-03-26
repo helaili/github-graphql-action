@@ -1,0 +1,37 @@
+name: Pin issue
+
+on:
+  issues:
+    types: [labeled]
+    
+jobs:
+  pin-issue:
+    runs-on: ubuntu-16.04
+    if: github.event.label == 'test'
+    steps:
+    - uses: actions/checkout@v2
+    - name: List Pinned Issues
+      uses: ./
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        query: samples/pinnedissues.query.yaml
+        logLevel: debug
+        accept: application/vnd.github.elektra-preview+json
+        outputFile: pinnedIssues.json
+    - name: Unpin Issues
+      uses: ./
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        query: samples/unpinissue.query.yaml
+        logLevel: debug
+        accept: application/vnd.github.elektra-preview+json
+    - name: Pin Issues
+      uses: ./
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        query: samples/pinissue.query.yaml
+        logLevel: debug
+        accept: application/vnd.github.elektra-preview+json
