@@ -36,7 +36,7 @@ variables:
   name: github-graphql-action
 ```
 
-```js
+```yaml
 ...
 jobs:
   static-query:
@@ -70,7 +70,7 @@ variables:
     name: name
 ```
 
-```js
+```yaml
 ...
 jobs:
   args-query:
@@ -110,7 +110,7 @@ variables:
     query: '.repository.name'
 ```
 
-```js
+```yaml
 ...
 jobs:
   introspection-query:
