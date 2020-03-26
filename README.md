@@ -4,14 +4,19 @@ An action that acts a client for GitHub's GraphQL API and can be chained. It mea
 
 Check [a sample workflow](https://github.com/helaili/github-graphql-action/blob/master/.github/main.workflow) and [sample GraphqQL queries](https://github.com/helaili/github-graphql-action/tree/master/.github/graphql_action)
 
-### Parameters
-| Argument   | Description |
+### Input parameters
+| Parameter   | Description |
 |--------|-------------|
 | query  | Query file path within the repo. _Required_  |
-| output   | The name of the file, relative to `GITHUB_WORKSPACE`, where the output will be stored. Defaults to `github-graphql-action.json` |
+| outputFile   | The name of the file, relative to `GITHUB_WORKSPACE`, where the output will be stored. |
 | url    | GraphQL endpoint URL. Defaults to `https://api.github.com/graphql`  |
 | accept | `Accept` header to set in the query. _Optional_   |
-| log    | Set this argument to any value to enable logging to the console. _Optional_  |
+| logLevel| Enable logging. Values are `info`, `timer`, `debug`, `warn`, `error`. _Optional_  |
+
+### Output parameter
+| Parameter   | Description |
+|--------|-------------|
+| queryResult | The outcome of the query  |
 
 
 ### Query file
@@ -31,18 +36,23 @@ variables:
   name: github-graphql-action
 ```
 
-
 ```js
-action "GraphQL query" {
-  uses = "./"
-  secrets = ["GITHUB_TOKEN"]
-  args = "--query .github/graphql_action/repository-static.query.yaml"
-}
+...
+jobs:
+  static-query:
+    runs-on: ubuntu-16.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ./
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        query: samples/repository-static.query.yaml
 ```
 
-#### Command line based parameters
+#### Parameters defined in the worklow
 
-Variables values can also come from a command line argument.
+Variables values can also come from extra input parameters.
 
 ```yaml
 query: '
@@ -61,11 +71,19 @@ variables:
 ```
 
 ```js
-action "GraphQL query" {
-  uses = "./"
-  secrets = ["GITHUB_TOKEN"]
-  args = "--query .github/graphql_action/repository-args.query.yaml --owner helaili --name hello-vue"
-}
+...
+jobs:
+  args-query:
+    runs-on: ubuntu-16.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ./
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        query: samples/repository-args.query.yaml
+        owner: helaili
+        name: github-graphql-action
 ```
 
 #### File based parameters
@@ -93,12 +111,19 @@ variables:
 ```
 
 ```js
-action "GraphQL query" {
-  uses = "./"
-  secrets = ["GITHUB_TOKEN"]
-  needs = "Repo Query Args"
-  args = "--query .github/graphql_action/repository-jq.query.yaml --log true"
-}
+...
+jobs:
+  introspection-query:
+    runs-on: ubuntu-16.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ./
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        query: samples/introspection.query.yaml
+        logLevel: debug
+        accept: application/vnd.github.elektra-preview+json
 ```
 
 #### Mutation
