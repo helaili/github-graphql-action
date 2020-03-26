@@ -5,6 +5,15 @@ on:
     types: [labeled]
     
 jobs:
+  debug: 
+    runs-on: ubuntu-16.04
+    if: github.event.label == 'test'
+    steps:
+    - uses: actions/github-script@0.8.0
+      with:
+        script: |
+          console.log(JSON.stringify(github.event))
+    
   pin-issue:
     runs-on: ubuntu-16.04
     if: github.event.label == 'test'
