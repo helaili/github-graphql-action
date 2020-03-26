@@ -2,7 +2,7 @@
 
 An action that acts a client for GitHub's GraphQL API and can be chained. It means you can use a first instance to execute a GraphQL query and use its output to execute a GraphQL mutation.
 
-Check [a sample workflow](https://github.com/helaili/github-graphql-action/blob/master/.github/workflows/pin-issue.ymls) and [sample GraphqQL queries](https://github.com/helaili/github-graphql-action/tree/master/samples)
+Check [a sample workflow](https://github.com/helaili/github-graphql-action/blob/master/.github/workflows/pin-issue.yml) and [sample GraphqQL queries](https://github.com/helaili/github-graphql-action/tree/master/samples)
 
 ### Input parameters
 | Parameter   | Description |
