@@ -52,6 +52,8 @@ Toolkit.run(async tools => {
           } else {
             jsonFile = tools.event_path
           }
+
+          tools.log.debug(`Input file is ${jsonFile}`)
           
           let result = execSync(`cat ${jsonFile} | jq -j '${jqQuery}'`,  {stdio: [this.stdin, this.stdout, this.stderr]})
           if (value.cast === 'Int') {
