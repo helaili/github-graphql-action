@@ -7,9 +7,7 @@ query:
 variables:
   owner:
     type: jq
-    file: ../workflow/event.json
     query: '.repository.owner.login'
   name:
     type: jq
-    file: ../workflow/event.json
     query: '.repository.name'

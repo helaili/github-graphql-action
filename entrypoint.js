@@ -44,10 +44,18 @@ Toolkit.run(async tools => {
           body.variables[key] = tools.inputs[value.name]
         } else if (value.type === 'jq') {
           // Need to apply jq to a file to retrieve a value
-          let jsonFile = value.file
           let jqQuery = value.query
-  
-          let result = execSync(`cat ${tools.workspace}/${jsonFile} | jq -j '${jqQuery}'`,  {stdio: [this.stdin, this.stdout, this.stderr]})
+          let jsonFile 
+          
+          if (value.file) {
+            jsonFile = `${tools.workspace}/${jsonFile}`
+          } else {
+            jsonFile = tools.event_path
+          }
+
+          tools.log.debug(`Input file is ${jsonFile}`)
+          
+          let result = execSync(`cat ${jsonFile} | jq -j '${jqQuery}'`,  {stdio: [this.stdin, this.stdout, this.stderr]})
           if (value.cast === 'Int') {
             body.variables[key] = parseInt(result)
           } else if (value.cast === 'Float') {

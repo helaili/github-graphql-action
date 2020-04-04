@@ -11,5 +11,4 @@ query: '
 variables:
   issueId:
     type: jq
-    file: ../workflow/event.json
     query: '.issue.node_id'
